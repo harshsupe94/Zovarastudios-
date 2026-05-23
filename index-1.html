@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zovarastudios — Art. Philosophy. Expression.</title>
+<meta name="description" content="Premium print-on-demand art brand. Where philosophy meets wearable art.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --surface2: #1a1a1a;
+  --gold: #c9a84c;
+  --gold-dim: #a07830;
+  --text: #f0ece4;
+  --text-muted: #888880;
+  --border: rgba(201,168,76,0.15);
+  --radius: 2px;
+  --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+[data-theme="warm"] {
+  --bg: #f5f0e8;
+  --surface: #ede8df;
+  --surface2: #e5dfd4;
+  --gold: #8b6914;
+  --gold-dim: #a07830;
+  --text: #1a1612;
+  --text-muted: #7a7060;
+  --border: rgba(139,105,20,0.2);
+}
+[data-theme="blue"] {
+  --bg: #080d1a;
+  --surface: #0d1525;
+  --surface2: #131e33;
+  --gold: #8fa8d4;
+  --gold-dim: #6a85b0;
+  --text: #e8edf5;
+  --text-muted: #6878a0;
+  --border: rgba(143,168,212,0.15);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  cursor: none;
+  overflow-x: hidden;
+  transition: background var(--transition), color var(--transition);
+}
+/* GRAIN OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+/* CURSOR */
+#cursor {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+}
+#cursor-follow {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: left 0.12s ease, top 0.12s ease, width 0.3s, height 0.3s, opacity 0.3s;
+  opacity: 0.6;
+}
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 60px;
+  backdrop-filter: blur(20px);
+  background: rgba(10,10,10,0.7);
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition);
+}
+[data-theme="warm"] nav { background: rgba(245,240,232,0.85); }
+[data-theme="blue"] nav { background: rgba(8,13,26,0.85); }
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.theme-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  padding: 6px 14px;
+  cursor: none;
+  transition: all 0.3s;
+}
+.theme-btn:hover { border-color: var(--gold); color: var(--gold); }
+.cart-btn {
+  position: relative;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 20px;
+  cursor: none;
+}
+.cart-count {
+  position: absolute;
+  top: -6px; right: -8px;
+  background: var(--gold);
+  color: #000;
+  font-size: 10px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+/* PAGES */
+.page { display: none; min-height: 100vh; padding-top: 90px; }
+.page.active { display: block; }
+
+/* HOME HERO */
+.hero {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(201,168,76,0.06) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 20%, rgba(201,168,76,0.04) 0%, transparent 50%);
+}
+.hero-content {
+  text-align: center;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 1.2s 0.3s forwards;
+}
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-tag {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 32px;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(56px, 9vw, 130px);
+  font-weight: 300;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  margin-bottom: 40px;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--gold);
+}
+.hero-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 60px;
+  max-width: 400px;
+  margin-inline: auto;
+  line-height: 1.8;
+}
+.btn-primary {
+  display: inline-block;
+  padding: 16px 48px;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: all 0.4s;
+  cursor: none;
+  background: transparent;
+}
+.btn-primary:hover {
+  background: var(--gold);
+  color: #000;
+}
+
+/* 3D FLOATING ELEMENTS */
+.floating-shapes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.shape {
+  position: absolute;
+  border: 1px solid var(--border);
+}
+.shape-1 {
+  width: 200px; height: 200px;
+  top: 15%; left: 8%;
+  animation: float1 8s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+.shape-2 {
+  width: 120px; height: 120px;
+  top: 60%; right: 10%;
+  animation: float2 10s ease-in-out infinite;
+  border-radius: 50%;
+}
+.shape-3 {
+  width: 80px; height: 80px;
+  bottom: 20%; left: 15%;
+  animation: float3 6s ease-in-out infinite;
+  transform: rotate(45deg);
+}
+@keyframes float1 {
+  0%,100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+  33% { transform: translateY(-20px) rotateX(10deg) rotateY(5deg); }
+  66% { transform: translateY(10px) rotateX(-5deg) rotateY(-10deg); }
+}
+@keyframes float2 {
+  0%,100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+}
+@keyframes float3 {
+  0%,100% { transform: rotate(45deg) translateY(0); }
+  50% { transform: rotate(60deg) translateY(-15px); }
+}
+
+/* MARQUEE */
+.marquee-wrap {
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+  background: var(--surface);
+}
+.marquee {
+  display: flex;
+  gap: 80px;
+  animation: marquee 20s linear infinite;
+  white-space: nowrap;
+}
+.marquee span {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.marquee span.gold { color: var(--gold); }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* FEATURED */
+.section { padding: 120px 60px; }
+.section-label {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 60px;
+}
+
+/* PRODUCT GRID */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2px;
+}
+.product-card {
+  background: var(--surface);
+  cursor: none;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.4s;
+}
+.product-card:hover { transform: translateY(-4px); }
+.product-card:hover .product-img-inner { transform: scale(1.05); }
+.product-card:hover .product-overlay { opacity: 1; }
+.product-img {
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  position: relative;
+  background: var(--surface2);
+}
+.product-img-inner {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.6s var(--transition);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 80px;
+  color: var(--border);
+}
+.product-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.overlay-btn {
+  padding: 12px 32px;
+  background: var(--gold);
+  color: #000;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: none;
+  cursor: none;
+}
+.product-info { padding: 20px; }
+.product-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+.product-cat {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.product-price {
+  font-size: 16px;
+  color: var(--gold);
+  font-weight: 400;
+}
+
+/* SHOP PAGE */
+.shop-header {
+  padding: 60px;
+  border-bottom: 1px solid var(--border);
+}
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+.filter-btn {
+  padding: 8px 24px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: all 0.3s;
+}
+.filter-btn.active, .filter-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.shop-grid { padding: 60px; }
+
+/* PRODUCT DETAIL PAGE */
+.product-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  padding: 60px;
+  min-height: 80vh;
+  align-items: start;
+}
+.product-3d-viewer {
+  aspect-ratio: 1;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.product-3d-inner {
+  font-size: 160px;
+  animation: rotate3d 12s linear infinite;
+  filter: drop-shadow(0 20px 60px rgba(201,168,76,0.2));
+}
+@keyframes rotate3d {
+  0% { transform: rotateY(0deg) rotateX(5deg); }
+  100% { transform: rotateY(360deg) rotateX(5deg); }
+}
+.product-detail-info { padding-top: 20px; }
+.detail-cat {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.detail-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+.detail-price {
+  font-size: 28px;
+  color: var(--gold);
+  margin-bottom: 32px;
+}
+.detail-desc {
+  color: var(--text-muted);
+  line-height: 1.9;
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+.option-label {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.size-options {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.size-btn {
+  width: 48px; height: 48px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text);
+  font-size: 12px;
+  cursor: none;
+  transition: all 0.3s;
+}
+.size-btn.active, .size-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.color-options {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+.color-swatch {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: none;
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+.color-swatch.active { border-color: var(--gold); }
+.add-to-cart-btn {
+  width: 100%;
+  padding: 18px;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: opacity 0.3s;
+  margin-bottom: 16px;
+}
+.add-to-cart-btn:hover { opacity: 0.85; }
+.wishlist-btn {
+  width: 100%;
+  padding: 16px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: all 0.3s;
+}
+.wishlist-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ABOUT */
+.about-hero {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  padding: 60px;
+  position: relative;
+  overflow: hidden;
+}
+.about-text { max-width: 700px; }
+.about-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.4;
+  margin-bottom: 40px;
+  color: var(--text);
+}
+.about-body {
+  color: var(--text-muted);
+  line-height: 2;
+  font-size: 15px;
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 2px;
+}
+.about-block {
+  background: var(--surface);
+  padding: 60px;
+}
+.about-block h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 20px;
+  color: var(--gold);
+}
+.about-block p {
+  color: var(--text-muted);
+  line-height: 1.9;
+  font-size: 14px;
+}
+
+/* JOURNAL */
+.journal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 2px;
+}
+.journal-card {
+  background: var(--surface);
+  padding: 48px;
+  cursor: none;
+  transition: background 0.3s;
+}
+.journal-card:hover { background: var(--surface2); }
+.journal-date {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+.journal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.journal-excerpt {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* CART SIDEBAR */
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+  backdrop-filter: blur(4px);
+}
+.cart-overlay.open { opacity: 1; pointer-events: all; }
+.cart-sidebar {
+  position: fixed;
+  top: 0; right: 0;
+  width: 420px;
+  height: 100vh;
+  background: var(--surface);
+  z-index: 2001;
+  transform: translateX(100%);
+  transition: transform 0.4s var(--transition);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+}
+.cart-sidebar.open { transform: translateX(0); }
+.cart-header {
+  padding: 32px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.cart-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+}
+.cart-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 24px;
+  cursor: none;
+}
+.cart-items { flex: 1; overflow-y: auto; padding: 24px 32px; }
+.cart-item {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.cart-item-img {
+  width: 80px; height: 80px;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  flex-shrink: 0;
+}
+.cart-item-info { flex: 1; }
+.cart-item-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+.cart-item-details {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.cart-item-price { color: var(--gold); font-size: 14px; }
+.cart-item-remove {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: none;
+  align-self: flex-start;
+}
+.cart-empty {
+  text-align: center;
+  padding: 80px 32px;
+  color: var(--text-muted);
+}
+.cart-empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.3;
+}
+.cart-footer {
+  padding: 32px;
+  border-top: 1px solid var(--border);
+}
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+}
+.cart-total span:last-child { color: var(--gold); }
+.checkout-btn {
+  width: 100%;
+  padding: 18px;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: opacity 0.3s;
+}
+.checkout-btn:hover { opacity: 0.85; }
+
+/* CHECKOUT PAGE */
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 60px;
+  padding: 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.checkout-form h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 300;
+  margin-bottom: 40px;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.form-group input:focus { border-color: var(--gold); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.section-divider {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 40px 0 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.payment-methods {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.pay-method {
+  flex: 1;
+  padding: 14px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text);
+  font-size: 13px;
+  cursor: none;
+  transition: all 0.3s;
+  text-align: center;
+}
+.pay-method.active { border-color: var(--gold); color: var(--gold); }
+.place-order-btn {
+  width: 100%;
+  padding: 20px;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: none;
+  margin-top: 32px;
+  transition: opacity 0.3s;
+}
+.place-order-btn:hover { opacity: 0.85; }
+.order-summary {
+  background: var(--surface);
+  padding: 40px;
+  align-self: start;
+  position: sticky;
+  top: 110px;
+}
+.order-summary h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+.summary-item span:last-child { color: var(--gold); }
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+}
+.summary-total span:last-child { color: var(--gold); }
+
+/* CONTACT */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  padding: 60px;
+}
+.contact-info h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  font-weight: 300;
+  margin-bottom: 24px;
+}
+.contact-info p {
+  color: var(--text-muted);
+  line-height: 1.9;
+  font-size: 14px;
+  margin-bottom: 40px;
+}
+.contact-detail {
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+.contact-detail span {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.contact-form textarea {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  resize: vertical;
+  min-height: 160px;
+  transition: border-color 0.3s;
+}
+.contact-form textarea:focus { border-color: var(--gold); }
+
+/* NEWSLETTER POPUP */
+.newsletter-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+  backdrop-filter: blur(8px);
+}
+.newsletter-overlay.show { opacity: 1; pointer-events: all; }
+.newsletter-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 60px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  transform: translateY(20px);
+  transition: transform 0.4s;
+}
+.newsletter-overlay.show .newsletter-box { transform: translateY(0); }
+.newsletter-box h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+.newsletter-box p {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+.newsletter-input-wrap {
+  display: flex;
+  gap: 0;
+}
+.newsletter-input-wrap input {
+  flex: 1;
+  padding: 14px 20px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-right: none;
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  font-family: 'DM Sans', sans-serif;
+}
+.newsletter-input-wrap button {
+  padding: 14px 28px;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: none;
+}
+.newsletter-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 24px;
+  cursor: none;
+}
+.newsletter-box { position: relative; }
+.newsletter-skip {
+  display: block;
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: none;
+  letter-spacing: 0.1em;
+}
+.newsletter-skip:hover { color: var(--text); }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 80px 60px 40px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px;
+}
+.footer-brand p {
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.8;
+  margin-top: 16px;
+  max-width: 280px;
+}
+.footer-col h4 {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+.footer-col a {
+  display: block;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 13px;
+  margin-bottom: 10px;
+  transition: color 0.3s;
+}
+.footer-col a:hover { color: var(--text); }
+.footer-bottom {
+  padding: 32px 60px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-bottom p {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--gold);
+  color: #000;
+  padding: 14px 32px;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  z-index: 9000;
+  opacity: 0;
+  transition: all 0.4s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ORDER SUCCESS */
+.order-success {
+  text-align: center;
+  padding: 120px 60px;
+}
+.order-success .checkmark {
+  font-size: 80px;
+  color: var(--gold);
+  margin-bottom: 32px;
+  display: block;
+}
+.order-success h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+.order-success p {
+  color: var(--text-muted);
+  font-size: 15px;
+  margin-bottom: 40px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  nav { padding: 20px 24px; }
+  .nav-links { display: none; }
+  .section { padding: 80px 24px; }
+  .product-detail { grid-template-columns: 1fr; gap: 40px; padding: 24px; }
+  .checkout-layout { grid-template-columns: 1fr; padding: 24px; }
+  .contact-layout { grid-template-columns: 1fr; padding: 24px; }
+  .about-grid { grid-template-columns: 1fr; }
+  footer { grid-template-columns: 1fr 1fr; padding: 60px 24px 40px; }
+  .footer-bottom { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+  .cart-sidebar { width: 100%; }
+  .hero-title { font-size: 52px; }
+  .shop-header, .shop-grid { padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-follow"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- NEWSLETTER POPUP -->
+<div class="newsletter-overlay" id="newsletter">
+  <div class="newsletter-box">
+    <button class="newsletter-close" onclick="closeNewsletter()">×</button>
+    <h2>Enter the Studio</h2>
+    <p>Get early access to new collections, philosophy essays, and exclusive drops. No spam. Only art.</p>
+    <div class="newsletter-input-wrap">
+      <input type="email" placeholder="your@email.com">
+      <button onclick="subscribeNewsletter()">Subscribe</button>
+    </div>
+    <span class="newsletter-skip" onclick="closeNewsletter()">Maybe later</span>
+  </div>
+</div>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="cart-sidebar" id="cart-sidebar">
+  <div class="cart-header">
+    <h2>Your Cart</h2>
+    <button class="cart-close" onclick="closeCart()">×</button>
+  </div>
+  <div class="cart-items" id="cart-items-list"></div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cart-total-price">$0.00</span>
+    </div>
+    <button class="checkout-btn" onclick="goToCheckout()">Proceed to Checkout</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" onclick="showPage('home')" style="cursor:none">Zovarastudios</a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" style="cursor:none">Home</a></li>
+    <li><a onclick="showPage('shop')" style="cursor:none">Shop</a></li>
+    <li><a onclick="showPage('about')" style="cursor:none">About</a></li>
+    <li><a onclick="showPage('journal')" style="cursor:none">Journal</a></li>
+    <li><a onclick="showPage('contact')" style="cursor:none">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-btn" onclick="cycleTheme()">Theme</button>
+    <button class="cart-btn" onclick="openCart()">
+      ◻
+      <span class="cart-count" id="cart-count">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- =================== HOME PAGE =================== -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-tag">Art · Philosophy · Expression</p>
+      <h1 class="hero-title">Where <em>thought</em><br>becomes form</h1>
+      <p class="hero-sub">Wearable philosophy. Print-on-demand art for those who think deeply and feel everything.</p>
+      <button class="btn-primary" onclick="showPage('shop')">Explore Collection</button>
+    </div>
+  </section>
+
+  <div class="marquee-wrap">
+    <div class="marquee">
+      <span>Zovarastudios</span><span class="gold">✦</span>
+      <span>Art is not decoration</span><span class="gold">✦</span>
+      <span>Philosophy made wearable</span><span class="gold">✦</span>
+      <span>Print on demand</span><span class="gold">✦</span>
+      <span>Dark surrealism</span><span class="gold">✦</span>
+      <span>Geometric consciousness</span><span class="gold">✦</span>
+      <span>Zovarastudios</span><span class="gold">✦</span>
+      <span>Art is not decoration</span><span class="gold">✦</span>
+      <span>Philosophy made wearable</span><span class="gold">✦</span>
+      <span>Print on demand</span><span class="gold">✦</span>
+      <span>Dark surrealism</span><span class="gold">✦</span>
+      <span>Geometric consciousness</span><span class="gold">✦</span>
+    </div>
+  </div>
+
+  <section class="section">
+    <p class="section-label">Featured Collection</p>
+    <h2 class="section-title">The Faceless<br>Series</h2>
+    <div class="products-grid" id="home-featured"></div>
+  </section>
+
+  <section style="background:var(--surface); padding:120px 60px; text-align:center;">
+    <p class="section-label">The Philosophy</p>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,52px);font-weight:300;font-style:italic;max-width:800px;margin:0 auto 40px;line-height:1.4;">
+      "Art is not what you see, but what you make others feel."
+    </h2>
+    <p style="color:var(--text-muted);max-width:500px;margin:0 auto 40px;line-height:1.9;font-size:14px;">
+      Zovarastudios creates art that questions identity, consciousness, and the human condition. Each piece is a meditation.
+    </p>
+    <button class="btn-primary" onclick="showPage('about')">Our Story</button>
+  </section>
+
+  <section class="section">
+    <p class="section-label">All Categories</p>
+    <h2 class="section-title">Shop by Type</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;">
+      <div onclick="showShopCategory('T-Shirts')" style="background:var(--surface);padding:48px;text-align:center;cursor:none;transition:background 0.3s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='var(--surface)'">
+        <div style="font-size:48px;margin-bottom:16px;">👕</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:8px;">T-Shirts</div>
+        <div style="font-size:12px;color:var(--text-muted);">Wearable art</div>
+      </div>
+      <div onclick="showShopCategory('Posters')" style="background:var(--surface);padding:48px;text-align:center;cursor:none;transition:background 0.3s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='var(--surface)'">
+        <div style="font-size:48px;margin-bottom:16px;">🖼️</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:8px;">Posters</div>
+        <div style="font-size:12px;color:var(--text-muted);">Wall philosophy</div>
+      </div>
+      <div onclick="showShopCategory('Hoodies')" style="background:var(--surface);padding:48px;text-align:center;cursor:none;transition:background 0.3s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='var(--surface)'">
+        <div style="font-size:48px;margin-bottom:16px;">🧥</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:8px;">Hoodies</div>
+        <div style="font-size:12px;color:var(--text-muted);">Cozy surrealism</div>
+      </div>
+      <div onclick="showShopCategory('Canvas')" style="background:var(--surface);padding:48px;text-align:center;cursor:none;transition:background 0.3s;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='var(--surface)'">
+        <div style="font-size:48px;margin-bottom:16px;">🎨</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:8px;">Canvas</div>
+        <div style="font-size:12px;color:var(--text-muted);">Premium prints</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-brand">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);letter-spacing:0.1em;">Zovarastudios</div>
+      <p>Art. Philosophy. Expression. Print-on-demand originals for the thoughtful soul.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a onclick="showPage('shop')">All Products</a>
+      <a onclick="showShopCategory('T-Shirts')">T-Shirts</a>
+      <a onclick="showShopCategory('Posters')">Posters</a>
+      <a onclick="showShopCategory('Hoodies')">Hoodies</a>
+    </div>
+    <div class="footer-col">
+      <h4>Info</h4>
+      <a onclick="showPage('about')">About</a>
+      <a onclick="showPage('journal')">Journal</a>
+      <a onclick="showPage('contact')">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a>Privacy Policy</a>
+      <a>Terms of Service</a>
+      <a>Shipping Policy</a>
+      <a>Returns</a>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <p>© 2026 Zovarastudios. All rights reserved.</p>
+    <p style="color:var(--gold);">Made with intention.</p>
+  </div>
+</div>
+
+<!-- =================== SHOP PAGE =================== -->
+<div class="page" id="page-shop">
+  <div class="shop-header">
+    <p class="section-label">Collection</p>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;">The Studio Shop</h2>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterProducts('All', this)">All</button>
+      <button class="filter-btn" onclick="filterProducts('T-Shirts', this)">T-Shirts</button>
+      <button class="filter-btn" onclick="filterProducts('Posters', this)">Posters</button>
+      <button class="filter-btn" onclick="filterProducts('Hoodies', this)">Hoodies</button>
+      <button class="filter-btn" onclick="filterProducts('Canvas', this)">Canvas</button>
+    </div>
+  </div>
+  <div class="shop-grid">
+    <div class="products-grid" id="shop-grid"></div>
+  </div>
+</div>
+
+<!-- =================== PRODUCT PAGE =================== -->
+<div class="page" id="page-product">
+  <div class="product-detail">
+    <div class="product-3d-viewer" id="product-viewer">
+      <div class="product-3d-inner" id="product-3d-emoji">🖼️</div>
+    </div>
+    <div class="product-detail-info">
+      <p class="detail-cat" id="detail-cat">Category</p>
+      <h1 class="detail-name" id="detail-name">Product Name</h1>
+      <p class="detail-price" id="detail-price">$0.00</p>
+      <p class="detail-desc" id="detail-desc">Description</p>
+      <p class="option-label">Size</p>
+      <div class="size-options">
+        <button class="size-btn active" onclick="selectSize(this)">XS</button>
+        <button class="size-btn" onclick="selectSize(this)">S</button>
+        <button class="size-btn" onclick="selectSize(this)">M</button>
+        <button class="size-btn" onclick="selectSize(this)">L</button>
+        <button class="size-btn" onclick="selectSize(this)">XL</button>
+        <button class="size-btn" onclick="selectSize(this)">XXL</button>
+      </div>
+      <p class="option-label">Color</p>
+      <div class="color-options">
+        <div class="color-swatch active" style="background:#1a1a1a;" onclick="selectColor(this)"></div>
+        <div class="color-swatch" style="background:#2d2d2d;" onclick="selectColor(this)"></div>
+        <div class="color-swatch" style="background:#4a3728;" onclick="selectColor(this)"></div>
+        <div class="color-swatch" style="background:#c9a84c;" onclick="selectColor(this)"></div>
+        <div class="color-swatch" style="background:#f0ece4;" onclick="selectColor(this)"></div>
+      </div>
+      <button class="add-to-cart-btn" onclick="addCurrentToCart()">Add to Cart</button>
+      <button class="wishlist-btn">Save to Wishlist</button>
+    </div>
+  </div>
+</div>
+
+<!-- =================== ABOUT PAGE =================== -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <div class="about-text">
+      <p class="section-label">The Studio</p>
+      <p class="about-quote">"We do not create art to be seen. We create it to see."</p>
+      <p class="about-body">Zovarastudios is a print-on-demand art brand rooted in dark surrealism, geometric consciousness, and philosophical inquiry. Every design is a question asked in visual form — about identity, existence, and the tension between thought and feeling.</p>
+    </div>
+  </div>
+  <div class="about-grid">
+    <div class="about-block">
+      <h3>The Vision</h3>
+      <p>Art should disturb the comfortable and comfort the disturbed. Zovarastudios designs are born from sleepless thoughts, philosophical crises, and the desire to make the invisible visible. We believe clothing can be a manifesto.</p>
+    </div>
+    <div class="about-block">
+      <h3>The Process</h3>
+      <p>Each piece begins as a pencil sketch — faceless figures, geometric heads, cyberpunk elements — and evolves into a digital artwork designed for premium print-on-demand production through Printful. Quality is non-negotiable.</p>
+    </div>
+    <div class="about-block">
+      <h3>The Philosophy</h3>
+      <p>Inspired by Vedic thought, existentialism, and the raw experience of being human in a fragmented world. Our art doesn't give answers. It asks better questions and lets the wearer carry the inquiry.</p>
+    </div>
+    <div class="about-block">
+      <h3>Print on Demand</h3>
+      <p>Every product is made when you order it. No waste. No overproduction. Fulfilled by Printful and shipped directly to you. This is intentional commerce — slow, considered, and honest.</p>
+    </div>
+  </div>
+</div>
+
+<!-- =================== JOURNAL PAGE =================== -->
+<div class="page" id="page-journal">
+  <section class="section">
+    <p class="section-label">Writings</p>
+    <h2 class="section-title">The Journal</h2>
+    <div class="journal-grid">
+      <div class="journal-card">
+        <p class="journal-date">May 2026</p>
+        <h3 class="journal-title">On Facelessness: Why I Draw Figures Without Eyes</h3>
+        <p class="journal-excerpt">The face is where we perform. Remove it and what remains is pure presence — no identity, no mask, no expectation. Just the outline of a being.</p>
+      </div>
+      <div class="journal-card">
+        <p class="journal-date">April 2026</p>
+        <h3 class="journal-title">Geometric Consciousness and the Shape of Thought</h3>
+        <p class="journal-excerpt">A triangle has three sides. So does conflict. Coincidence? Every geometric form maps to an internal state. The studio explores these correspondences.</p>
+      </div>
+      <div class="journal-card">
+        <p class="journal-date">March 2026</p>
+        <h3 class="journal-title">Why Dark Surrealism is the Most Honest Art Form</h3>
+        <p class="journal-excerpt">Realism shows the surface. Surrealism shows what lives beneath. Add darkness and you have the full picture — the part we usually hide from ourselves.</p>
+      </div>
+      <div class="journal-card">
+        <p class="journal-date">February 2026</p>
+        <h3 class="journal-title">The Cyberpunk Aesthetic as Modern Vedanta</h3>
+        <p class="journal-excerpt">Neon gods, digital maya, human-machine tension — cyberpunk asks the same questions as ancient philosophy. Who is the observer behind the circuit?</p>
+      </div>
+      <div class="journal-card">
+        <p class="journal-date">January 2026</p>
+        <h3 class="journal-title">Wearable Philosophy: When Clothing Becomes Language</h3>
+        <p class="journal-excerpt">What you wear is a broadcast. Most people transmit noise. Zovarastudios designs transmit signal — for those who want their body to speak their mind.</p>
+      </div>
+      <div class="journal-card">
+        <p class="journal-date">December 2025</p>
+        <h3 class="journal-title">On Creating from Pain Without Making Pain Art</h3>
+        <p class="journal-excerpt">The goal is not to make the viewer suffer. The goal is to transmute suffering into something that helps the viewer feel less alone in theirs.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- =================== CONTACT PAGE =================== -->
+<div class="page" id="page-contact">
+  <div class="contact-layout">
+    <div class="contact-info">
+      <p class="section-label">Get in Touch</p>
+      <h2>Let's talk<br>about art.</h2>
+      <p>For collaborations, custom commissions, wholesale inquiries, or just to share what our art made you feel — reach out. We respond to every message.</p>
+      <div class="contact-detail">
+        <span>Email</span>
+        hello@zovarastudios.com
+      </div>
+      <div class="contact-detail">
+        <span>Instagram</span>
+        @zovarastudios
+      </div>
+      <div class="contact-detail">
+        <span>Response Time</span>
+        Within 24 hours
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" placeholder="Full name">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label>Subject</label>
+        <input type="text" placeholder="What's this about?">
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Tell us everything..."></textarea>
+      </div>
+      <button class="btn-primary" style="width:100%;text-align:center;display:block;" onclick="sendContact()">Send Message</button>
+    </div>
+  </div>
+</div>
+
+<!-- =================== CHECKOUT PAGE =================== -->
+<div class="page" id="page-checkout">
+  <div id="checkout-form-section">
+    <div class="checkout-layout">
+      <div class="checkout-form">
+        <h2>Complete Your Order</h2>
+        <div class="section-divider">Contact Information</div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="your@email.com" id="co-email">
+        </div>
+        <div class="section-divider">Shipping Address</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="First" id="co-fname">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="Last" id="co-lname">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Address</label>
+          <input type="text" placeholder="Street address" id="co-addr">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" placeholder="City" id="co-city">
+          </div>
+          <div class="form-group">
+            <label>Postal Code</label>
+            <input type="text" placeholder="ZIP / PIN" id="co-zip">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <select id="co-country">
+            <option>India</option>
+            <option>United States</option>
+            <option>United Kingdom</option>
+            <option>Canada</option>
+            <option>Australia</option>
+            <option>Germany</option>
+          </select>
+        </div>
+        <div class="section-divider">Payment</div>
+        <div class="payment-methods">
+          <button class="pay-method active" onclick="selectPayment(this)">💳 Credit Card</button>
+          <button class="pay-method" onclick="selectPayment(this)">PayPal</button>
+          <button class="pay-method" onclick="selectPayment(this)">UPI</button>
+        </div>
+        <div class="form-group">
+          <label>Card Number</label>
+          <input type="text" placeholder="•••• •••• •••• ••••">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Expiry</label>
+            <input type="text" placeholder="MM / YY">
+          </div>
+          <div class="form-group">
+            <label>CVV</label>
+            <input type="text" placeholder="•••">
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:16px;line-height:1.7;">
+          🔒 Payments processed securely via Stripe. Your card details are never stored on our servers. Orders are fulfilled by Printful and shipped to your door.
+        </p>
+        <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+      </div>
+      <div class="order-summary">
+        <h3>Order Summary</h3>
+        <div id="checkout-items"></div>
+        <div class="summary-item" style="margin-top:20px;">
+          <span style="color:var(--text-muted)">Subtotal</span>
+          <span id="summary-subtotal">$0.00</span>
+        </div>
+        <div class="summary-item">
+          <span style="color:var(--text-muted)">Shipping</span>
+          <span style="color:var(--gold)">Calculated at next step</span>
+        </div>
+        <div class="summary-total">
+          <span>Total</span>
+          <span id="summary-total">$0.00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="order-success-section" class="order-success" style="display:none;">
+    <span class="checkmark">✦</span>
+    <h2>Order Placed</h2>
+    <p>Thank you. Your order is confirmed and being prepared by Printful.<br>You'll receive a confirmation email shortly.</p>
+    <button class="btn-primary" onclick="showPage('shop')">Continue Shopping</button>
+  </div>
+</div>
+
+<script>
+// ===================== DATA =====================
+const products = [
+  { id:1, name:'The Faceless Observer', cat:'T-Shirts', price:34.99, emoji:'👕', desc:'A figure without features watches everything. Dark surrealism on premium cotton. Features a geometric-headed silhouette in stark contrast against washed black.' },
+  { id:2, name:'Geometric Consciousness', cat:'Posters', price:24.99, emoji:'🖼️', desc:'A meditation on the architecture of thought. Fine art print on heavyweight matte paper. Ships rolled in a protective tube.' },
+  { id:3, name:'Void Walker', cat:'Hoodies', price:64.99, emoji:'🧥', desc:'For those who move through the world differently. Heavyweight fleece, oversized fit, minimal front graphic with full back print.' },
+  { id:4, name:'Cyberpunk Yogi', cat:'Canvas', price:89.99, emoji:'🎨', desc:'The ancient meets the future. Gallery-wrapped canvas print, hand-finished edges. Ready to hang. A statement piece.' },
+  { id:5, name:'Fragmented Self', cat:'T-Shirts', price:36.99, emoji:'👕', desc:'Identity deconstructed and reassembled. Limited edition print on organic cotton. Each shirt slightly different due to the printing process.' },
+  { id:6, name:'The Watcher Series', cat:'Posters', price:19.99, emoji:'🖼️', desc:'Three-piece poster series exploring surveillance, perception, and inner gaze. Sold as individual prints or as a triptych.' },
+  { id:7, name:'Shadow Doctrine', cat:'Hoodies', price:69.99, emoji:'🧥', desc:'Heavy. Intentional. The kind of hoodie that becomes part of your identity. Philosophy printed on the inside hem.' },
+  { id:8, name:'Neural Garden', cat:'Canvas', price:99.99, emoji:'🎨', desc:'Where organic meets geometric. A surrealist landscape of the mind rendered in fine art inks on museum-quality canvas.' },
+];
+
+let cart = [];
+let currentProduct = null;
+let selectedSize = 'M';
+let currentTheme = 'dark';
+const themes = ['dark', 'warm', 'blue'];
+
+// ===================== CURSOR =====================
+const cursor = document.getElementById('cursor');
+const cursorFollow = document.getElementById('cursor-follow');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  cursorFollow.style.left = e.clientX + 'px';
+  cursorFollow.style.top = e.clientY + 'px';
+});
+document.addEventListener('mousedown', () => {
+  cursor.style.transform = 'translate(-50%,-50%) scale(2)';
+});
+document.addEventListener('mouseup', () => {
+  cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+});
+
+// ===================== PAGES =====================
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+  if (name === 'shop') renderShop('All');
+  if (name === 'home') renderFeatured();
+  if (name === 'checkout') renderCheckout();
+}
+
+// ===================== THEME =====================
+function cycleTheme() {
+  const idx = themes.indexOf(currentTheme);
+  currentTheme = themes[(idx + 1) % themes.length];
+  document.body.setAttribute('data-theme', currentTheme === 'dark' ? '' : currentTheme);
+  showToast('Theme: ' + currentTheme.charAt(0).toUpperCase() + currentTheme.slice(1));
+}
+
+// ===================== PRODUCTS =====================
+function renderFeatured() {
+  const grid = document.getElementById('home-featured');
+  grid.innerHTML = products.slice(0,4).map(p => productCardHTML(p)).join('');
+}
+function renderShop(cat) {
+  const filtered = cat === 'All' ? products : products.filter(p => p.cat === cat);
+  document.getElementById('shop-grid').innerHTML = filtered.map(p => productCardHTML(p)).join('');
+}
+function productCardHTML(p) {
+  return `
+  <div class="product-card" onclick="openProduct(${p.id})">
+    <div class="product-img">
+      <div class="product-img-inner">${p.emoji}</div>
+      <div class="product-overlay">
+        <button class="overlay-btn">View Product</button>
+      </div>
+    </div>
+    <div class="product-info">
+      <p class="product-cat">${p.cat}</p>
+      <h3 class="product-name">${p.name}</h3>
+      <p class="product-price">$${p.price.toFixed(2)}</p>
+    </div>
+  </div>`;
+}
+function filterProducts(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderShop(cat);
+}
+function showShopCategory(cat) {
+  showPage('shop');
+  setTimeout(() => {
+    const btn = [...document.querySelectorAll('.filter-btn')].find(b => b.textContent === cat);
+    if (btn) filterProducts(cat, btn);
+  }, 100);
+}
+function openProduct(id) {
+  currentProduct = products.find(p => p.id === id);
+  if (!currentProduct) return;
+  document.getElementById('detail-cat').textContent = currentProduct.cat;
+  document.getElementById('detail-name').textContent = currentProduct.name;
+  document.getElementById('detail-price').textContent = '$' + currentProduct.price.toFixed(2);
+  document.getElementById('detail-desc').textContent = currentProduct.desc;
+  document.getElementById('product-3d-emoji').textContent = currentProduct.emoji;
+  showPage('product');
+}
+
+// ===================== SIZE / COLOR =====================
+function selectSize(btn) {
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedSize = btn.textContent;
+}
+function selectColor(swatch) {
+  document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+  swatch.classList.add('active');
+}
+
+// ===================== CART =====================
+function addCurrentToCart() {
+  if (!currentProduct) return;
+  const existing = cart.find(i => i.id === currentProduct.id && i.size === selectedSize);
+  if (existing) existing.qty++;
+  else cart.push({ ...currentProduct, size: selectedSize, qty: 1 });
+  updateCartCount();
+  showToast('Added to cart — ' + currentProduct.name);
+  openCart();
+}
+function updateCartCount() {
+  const total = cart.reduce((s, i) => s + i.qty, 0);
+  document.getElementById('cart-count').textContent = total;
+}
+function openCart() {
+  document.getElementById('cart-overlay').classList.add('open');
+  document.getElementById('cart-sidebar').classList.add('open');
+  renderCartItems();
+}
+function closeCart() {
+  document.getElementById('cart-overlay').classList.remove('open');
+  document.getElementById('cart-sidebar').classList.remove('open');
+}
+function renderCartItems() {
+  const list = document.getElementById('cart-items-list');
+  const footer = document.getElementById('cart-footer');
+  if (cart.length === 0) {
+    list.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">◻</div><p>Your cart is empty.<br>Add something beautiful.</p></div>`;
+    footer.style.display = 'none';
+    return;
+  }
+  footer.style.display = 'block';
+  list.innerHTML = cart.map((item, i) => `
+    <div class="cart-item">
+      <div class="cart-item-img">${item.emoji}</div>
+      <div class="cart-item-info">
+        <p class="cart-item-name">${item.name}</p>
+        <p class="cart-item-details">${item.cat} · Size ${item.size} · Qty ${item.qty}</p>
+        <p class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</p>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart(${i})">×</button>
+    </div>`).join('');
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  document.getElementById('cart-total-price').textContent = '$' + total.toFixed(2);
+}
+function removeFromCart(i) {
+  cart.splice(i, 1);
+  updateCartCount();
+  renderCartItems();
+}
+function goToCheckout() {
+  closeCart();
+  showPage('checkout');
+}
+
+// ===================== CHECKOUT =====================
+function renderCheckout() {
+  document.getElementById('checkout-form-section').style.display = 'block';
+  document.getElementById('order-success-section').style.display = 'none';
+  const items = document.getElementById('checkout-items');
+  items.innerHTML = cart.map(i => `
+    <div class="summary-item">
+      <span>${i.name} × ${i.qty}</span>
+      <span>$${(i.price * i.qty).toFixed(2)}</span>
+    </div>`).join('');
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  document.getElementById('summary-subtotal').textContent = '$' + total.toFixed(2);
+  document.getElementById('summary-total').textContent = '$' + total.toFixed(2);
+}
+function selectPayment(btn) {
+  document.querySelectorAll('.pay-method').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function placeOrder() {
+  const email = document.getElementById('co-email').value;
+  const fname = document.getElementById('co-fname').value;
+  const addr = document.getElementById('co-addr').value;
+  if (!email || !fname || !addr) {
+    showToast('Please fill in all required fields');
+    return;
+  }
+  document.getElementById('checkout-form-section').style.display = 'none';
+  document.getElementById('order-success-section').style.display = 'block';
+  cart = [];
+  updateCartCount();
+  window.scrollTo(0, 0);
+}
+
+// ===================== NEWSLETTER =====================
+setTimeout(() => {
+  document.getElementById('newsletter').classList.add('show');
+}, 4000);
+function closeNewsletter() {
+  document.getElementById('newsletter').classList.remove('show');
+}
+function subscribeNewsletter() {
+  closeNewsletter();
+  showToast('Welcome to the studio ✦');
+}
+
+// ===================== CONTACT =====================
+function sendContact() {
+  showToast('Message sent. We\'ll be in touch.');
+}
+
+// ===================== TOAST =====================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===================== INIT =====================
+renderFeatured();
+</script>
+</body>
+</html>
